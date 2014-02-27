@@ -8,26 +8,34 @@ function Metronome (options) {
   _.assign(this, events());
 
   options = options || {};
-
   this.bpm = options.bpm;
   this.bps = this.bpm / 60;
+  this.stem = ["h", "s", "s", "s"];
 }
+
+Metronome.prototype.nextBeat = function () {
+  var first = this.stem[0];
+  this.stem = _.rest(this.stem, 1).concat(first);
+  return first;
+};
 
 Metronome.prototype.start = function () {
   var self = this;
 
-  self.tick('hard');
+  var ms = 1000/this.bps;
 
-  setTimeout(function () {
-    self.tick('soft');
-  }, 1000/this.bps);
+  (function nextTick () {
+    self.tick();
+    setTimeout(nextTick, ms);
+  })();
 };
 
-Metronome.prototype.tick = function (level) {
+Metronome.prototype.tick = function () {
   var self = this;
 
+  var beat = this.nextBeat();
   setTimeout(function () {
-    self.emit(level);
+    self.emit(beat);
   }, 0);
 };
 

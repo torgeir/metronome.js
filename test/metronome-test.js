@@ -31,16 +31,26 @@ describe('metronome', function () {
 // Steg 2
 // 1 x 11/8, 1 x 10/8
 
-  it('ticks first beat', function (done) {
-    m.start();
-    m.on('hard', done);
-    clock.tick(0);
+  describe('4/4', function () {
+
+    it('ticks hard first beat', function (done) {
+      m.start();
+      m.on('h', done);
+      clock.tick(0);
+    });
+
+    it('ticks low rest beats', function (done) {
+      m.start();
+      var ticks = 0;
+      m.on('s', function () {
+        ticks += 1;
+        if (ticks == 3) {
+          done();
+        }
+      });
+      clock.tick(1500);
+    });
+
   });
 
-
-  it('ticks second beat', function (done) {
-    m.start();
-    m.on('soft', done);
-    clock.tick(500);
-  });
 });
