@@ -5,7 +5,7 @@ var events = require('./events');
 module.exports = Metronome;
 
 function Metronome (options) {
-  _.assign(this, events());
+  _.extend(this, events());
 
   options = options || {};
   this.bpm = options.bpm;
@@ -35,7 +35,7 @@ Metronome.prototype.tick = function () {
 
   var beat = this.nextBeat();
   setTimeout(function () {
-    self.emit(beat);
+    self.emit('beat', beat);
   }, 0);
 };
 
