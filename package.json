@@ -3,11 +3,8 @@
   "version": "0.0.1",
   "description": "A js, run everywhere, metronome.",
   "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
-    "test": "gulp test"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -30,6 +27,7 @@
     "chai": "~1.9.0"
   },
   "dependencies": {
+    "promise": "~4.0.0",
     "lodash": "~2.4.1"
   }
 }
