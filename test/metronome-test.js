@@ -4,7 +4,9 @@ var sinonChai = require("sinon-chai");
 chai.should();
 chai.use(sinonChai);
 
-var Metronome = require('../src/metronome');
+var m = require('../src/metronome');
+var Metronome = m.Metronome;
+var Bar = m.Bar;
 
 
 describe('metronome', function () {
@@ -12,28 +14,19 @@ describe('metronome', function () {
   var m,
       clock;
 
-  beforeEach(function () {
-    clock = sinon.useFakeTimers();
-    m = new Metronome({ bpm: 120 });
-  });
-
-  afterEach(function () {
-    clock.restore();
-  });
-
-// Steg 1
-// 3 av 1/4 lengde
-// 11 av 1/8 lengde
-//
-// new Metronome({
-//   bpm: 120
-// });
-//
-
-// Steg 2
-// 1 x 11/8, 1 x 10/8
-
   describe('4/4', function () {
+
+    beforeEach(function () {
+      clock = sinon.useFakeTimers();
+      m = new Metronome({
+        bar: new Bar(4, 4),
+        bpm: 120 // beat hver 500 ms
+      });
+    });
+
+    afterEach(function () {
+      clock.restore();
+    });
 
     it('ticks hard first beat', function () {
       m.start();
@@ -76,6 +69,48 @@ describe('metronome', function () {
       clock.tick(500);
     });
 
+  });
+
+  describe('11/8', function () {
+
+    beforeEach(function () {
+      clock = sinon.useFakeTimers();
+      m = new Metronome({
+        bar: new Bar(11, 8),
+        bpm: 120 // beat hver 250ms
+      });
+    });
+
+    afterEach(function () {
+      clock.restore();
+    });
+
+    it('ticks rest beats', function () {
+      m.start();
+
+      var beats = [];
+      m.on('beat', function (level) {
+        beats.push(level);
+      });
+
+      clock.tick(0);
+      beats.should.eql([ 'h' ]);
+
+      clock.tick(10 * 250);
+      beats.should.eql([
+        'h',
+        's',
+        's',
+        's',
+        's',
+        's',
+        's',
+        's',
+        's',
+        's',
+        's',
+      ]);
+    });
   });
 
 });
