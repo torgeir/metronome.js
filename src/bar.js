@@ -5,8 +5,12 @@ var BASE = 4;
 function Bar (number, unit) {
   this.multiplier = 1 / (unit / BASE);
   this.number = number;
-  this.beats = "h" + Array(number).join("s");
+  this.reset();
 }
+
+Bar.prototype.reset = function () {
+  this.beats = "h" + Array(this.number).join("s");
+};
 
 Bar.prototype.nextBeat = function () {
   var first = this.beats[0];

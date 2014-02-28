@@ -54,7 +54,7 @@ describe('metronome', function () {
       beats.should.eql(['s', 's', 's']);
     });
 
-    xit('loops', function () {
+    it('loops', function () {
       m.start();
 
       clock.tick(1500);

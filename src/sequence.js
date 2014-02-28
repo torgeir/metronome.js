@@ -8,7 +8,19 @@ function Sequence (bpm, bars) {
 Sequence.prototype.nextBeat = function () {
   var beat = this.current.nextBeat();
   if (!beat) {
-    this.current = this.bars.indexOf(this.current) + 1;
+
+    var nextBarIndex =
+      this.bars.indexOf(this.current) + 1;
+
+    if (nextBarIndex >= this.bars.length) {
+      this.bars.map(function (bar) {
+        bar.reset();
+      });
+      this.current = this.bars[0];
+      return this.nextBeat();
+    }
+
+    this.current = this.bars[nextBarIndex]
     return this.nextBeat();
   }
   return beat;
