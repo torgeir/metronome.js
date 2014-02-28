@@ -8,15 +8,11 @@ describe('bar', function () {
     b = new Bar(4, 4);
   });
 
-  it('creates beats', function () {
-    b.beats.should.equal("hsss");
-  });
-
   it('finds next beat', function () {
-    b.nextBeat().should.equal('h');
-    b.nextBeat().should.equal('s');
-    b.nextBeat().should.equal('s');
-    b.nextBeat().should.equal('s');
+    b.at(0).should.equal('h');
+    b.at(1).should.equal('s');
+    b.at(2).should.equal('s');
+    b.at(3).should.equal('s');
   });
 
 });

@@ -4,18 +4,17 @@ var BASE = 4;
 
 function Bar (number, unit) {
   this.multiplier = 1 / (unit / BASE);
+  this.unit = unit;
   this.number = number;
-  this.reset();
-}
-
-Bar.prototype.reset = function () {
   this.beats = "h" + Array(this.number).join("s");
 };
 
-Bar.prototype.nextBeat = function () {
-  var first = this.beats[0];
-  this.beats = _.drop(this.beats, 1);
-  return first;
+Bar.prototype.at = function (i) {
+  return this.beats[i];
 };
+
+Bar.prototype.toString = function () {
+  return "Bar(" + this.number + "/" + this.unit + ")";
+}
 
 module.exports = Bar;
