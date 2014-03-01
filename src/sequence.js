@@ -1,3 +1,4 @@
+var _ = require('lodash');
 
 function Sequence (bpm, bars) {
   if (!(this instanceof Sequence)) {
@@ -5,10 +6,30 @@ function Sequence (bpm, bars) {
   }
 
   this.bpm = bpm;
-  this.bars = bars;
-  this.current = this.bars[0];
   this.beatIndex = 0;
+
+  this.bars = bars.map(function (bar) { return bar.copy(); });
+  this.bars = this.flatten();
+  this.current = this.bars[0];
 }
+
+Sequence.prototype.flatten = function () {
+  var self = this;
+  return _.flatten(this.bars.map(function (barOrSequence) {
+    if (!barOrSequence.bpm) {
+      barOrSequence.bpm = self.bpm;
+    }
+    return barOrSequence.flatten();
+  }));
+};
+
+Sequence.prototype.copy = function () {
+  return new Sequence(
+    this.bpm,
+    this.bars.map(function (bar) {
+      return bar.copy();
+    }));
+};
 
 Sequence.prototype.nextBeat = function () {
   var beat = this.current.at(this.beatIndex++);
@@ -17,6 +38,10 @@ Sequence.prototype.nextBeat = function () {
     return this.nextBeat();
   }
   return beat;
+};
+
+Sequence.prototype.toString = function () {
+  return "Seq [ " + this.bars.join(", ") + " ]";
 };
 
 Sequence.prototype.ms  = function () {
