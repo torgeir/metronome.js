@@ -8,7 +8,7 @@ function Sequence (bpm, bars) {
   this.bpm = bpm;
   this.beatIndex = 0;
 
-  this.bars = bars.map(function (bar) { return bar.copy(); });
+  this.bars = bars.map(Sequence.asCopy);
   this.bars = this.flatten();
   this.current = this.bars[0];
 }
@@ -26,9 +26,7 @@ Sequence.prototype.flatten = function () {
 Sequence.prototype.copy = function () {
   return new Sequence(
     this.bpm,
-    this.bars.map(function (bar) {
-      return bar.copy();
-    }));
+    this.bars.map(Sequence.asCopy));
 };
 
 Sequence.prototype.nextBeat = function () {
@@ -60,6 +58,10 @@ Sequence.prototype.nextBar = function () {
   }
 
   return this.bars[nextBarIndex];
+};
+
+Sequence.asCopy = function (copyable) {
+  return copyable.copy();
 };
 
 module.exports = Sequence;
