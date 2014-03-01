@@ -6,7 +6,7 @@ var Sequence = require('src/sequence');
 var Bar = require('src/bar');
 
 var m = new Metronome({
-  seq: new Sequence(220, [ new Bar(11, 8), new Bar(4, 4) ])
+  seq: new Sequence(220, [ new Bar(11, 8), new Bar(4, 4), new Bar(2, 4) ])
 });
 m.start();
 
