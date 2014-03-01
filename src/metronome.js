@@ -22,13 +22,9 @@ Metronome.prototype.tick = function () {
   var self = this;
 
   var beat = this.seq.nextBeat();
-  nextTick(function () {
+  setTimeout(function () {
     self.emit('beat', beat);
-  });
+  }, 0);
 };
-
-function nextTick (f) {
-  (setImmediate || process.nextTick)(f);
-}
 
 module.exports = Metronome;
