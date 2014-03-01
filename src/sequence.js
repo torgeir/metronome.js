@@ -1,5 +1,9 @@
 
 function Sequence (bpm, bars) {
+  if (!(this instanceof Sequence)) {
+    return new Sequence(bpm, bars);
+  }
+
   this.bpm = bpm;
   this.bars = bars;
   this.current = this.bars[0];

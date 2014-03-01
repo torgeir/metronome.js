@@ -1,11 +1,12 @@
-var Bar = require('../src/bar');
+var metronome = require('../');
+var Bar = metronome.Bar;
 
 describe('bar', function () {
 
   var b;
 
   beforeEach(function () {
-    b = new Bar(4, 4);
+    b = Bar(4,4);
   });
 
   it('finds next beat', function () {

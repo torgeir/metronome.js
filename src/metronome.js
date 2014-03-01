@@ -13,8 +13,12 @@ Metronome.prototype.start = function () {
 
   (function nextTick () {
     self.tick();
-    setTimeout(nextTick, self.seq.ms());
+    setTimeout(nextTick, self.tickDelay());
   })();
+};
+
+Metronome.prototype.tickDelay = function () {
+  return this.seq.ms();
 };
 
 Metronome.prototype.tick = function () {

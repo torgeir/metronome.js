@@ -3,6 +3,7 @@ test:
 	  test/*-test.js \
 	  --reporter min \
 	  --growl \
-	  --require test/helper.js
+	  --require test/helper.js \
+	  --watch
 
 .PHONY: test

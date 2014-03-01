@@ -1,101 +1,86 @@
 var sinon = require('sinon');
-
-var Metronome = require('../src/metronome');
-var Sequence = require('../src/sequence');
-var Bar = require('../src/bar');
+var a     = require('../').builder;
 
 describe('metronome', function () {
 
-  var m,
-      clock;
+  var m, clock;
 
   describe('4/4', function () {
-
-    beforeEach(function () {
-      clock = sinon.useFakeTimers();
-      m = new Metronome({
-        // beat hver 500ms
-        seq: new Sequence(120,
-                [ new Bar(4, 4) ])
-      });
-    });
-
-    afterEach(function () {
-      clock.restore();
-    });
 
     it('ticks hard first beat', function () {
       m.start();
 
-      var spy = sinon.spy();
-      m.on('beat', spy);
-      clock.tick(0);
-
-      spy.should.have.been.calledWith('h');
+      m.on('beat', function (beat) {
+        beat.should.equal('h');
+      });
+      clock.tick();
     });
 
     it('ticks low rest beats', function () {
       m.start();
 
-      clock.tick(0); // skip first h
+      clock.tick(); // skip h
 
-      var beats = [];
+      var beats = '';
       m.on('beat', function (beat) {
-        beats.push(beat);
+        beats += beat;
       });
 
       clock.tick(500);
-      beats.should.eql(['s']);
+      beats.should.eql('s');
 
       clock.tick(500);
-      beats.should.eql(['s', 's']);
+      beats.should.eql('ss');
 
       clock.tick(500);
-      beats.should.eql(['s', 's', 's']);
+      beats.should.eql('sss');
     });
 
     it('loops', function () {
       m.start();
 
-      clock.tick(1500);
+      clock.tick(1500); // skip hsss
 
-      m.on('beat', function (level) {
-        level.should.equal('h');
+      m.on('beat', function (beat) {
+        beat.should.equal('h');
       });
       clock.tick(500);
     });
 
+    beforeEach(function () {
+      // beats every 500ms
+      m = a.metronome.build;
+    });
   });
 
   describe('11/8', function () {
 
-    beforeEach(function () {
-      clock = sinon.useFakeTimers();
-      m = new Metronome({
-        // beat hver 250ms
-        seq: new Sequence(120,
-                [ new Bar(11, 8) ]),
-      });
-    });
-
-    afterEach(function () {
-      clock.restore();
-    });
-
     it('ticks rest beats', function () {
+      // beats every 250ms
+      m = a.metronome
+        .withBpm(120)
+        .withBars('11/8').build;
+
       m.start();
 
-      var beats = [];
-      m.on('beat', function (level) {
-        beats.push(level);
+      var beats = '';
+      m.on('beat', function (beat) {
+        beats += beat;
       });
 
-      clock.tick(0);
-      beats.should.eql([ 'h' ]);
+      clock.tick();
+      beats.should.eql('h');
 
       clock.tick(10 * 250);
-      beats.should.eql([ 'h', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's' ]);
+      beats.should.eql('hssssssssss');
     });
   });
 
+  beforeEach(function () {
+    clock = sinon.useFakeTimers();
+  });
+
+  afterEach(function () {
+    clock.restore();
+  });
 });
