@@ -1,9 +1,21 @@
+var should = require('chai').should();
 var sinon = require('sinon');
+
+var Seq   = require('../').Sequence;
 var a     = require('../').builder;
 
 describe('metronome', function () {
 
   var m, clock;
+
+  it('throws if outer sequence does not have bpm', function () {
+    try {
+      new Metronome({ seq: Seq() } );
+    }
+    catch (e) {
+      should.exist(e);
+    }
+  });
 
   describe('4/4', function () {
 

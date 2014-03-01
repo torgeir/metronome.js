@@ -5,6 +5,7 @@ var events = require('./events');
 function Metronome (options) {
   _.extend(this, events());
 
+  if (!options.seq.bpm) throw new Error('Outer sequence needs a bpm.');
   this.seq = options.seq;
 }
 
@@ -13,12 +14,8 @@ Metronome.prototype.start = function () {
 
   (function nextTick () {
     self.tick();
-    setTimeout(nextTick, self.tickDelay());
+    setTimeout(nextTick, self.seq.ms());
   })();
-};
-
-Metronome.prototype.tickDelay = function () {
-  return this.seq.ms();
 };
 
 Metronome.prototype.tick = function () {

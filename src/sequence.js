@@ -43,7 +43,7 @@ Sequence.prototype.toString = function () {
 };
 
 Sequence.prototype.ms  = function () {
-  var ms = 1000 / (this.bpm / 60);
+  var ms = 1000 / (this.current.bpm / 60);
   return ms * this.current.multiplier;
 };
 

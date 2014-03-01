@@ -5,6 +5,7 @@ function Bar (number, unit, bpm) {
     return new Bar(number, unit, bpm);
   }
 
+
   if (typeof number == 'string' &&
       typeof unit == 'undefined') {
     var numberUnit = number.split('/');
@@ -18,6 +19,10 @@ function Bar (number, unit, bpm) {
   this.beats = "h" + Array(number).join("s");
 }
 
+Bar.prototype.at = function (i) {
+  return this.beats[i];
+};
+
 Bar.prototype.flatten = function () {
   return this.copy();
 };
@@ -28,10 +33,6 @@ Bar.prototype.copy = function (attrs) {
   var unit = attrs.unit || this.unit;
   var bpm = attrs.bpm || this.bpm;
   return new Bar(number, unit, bpm);
-};
-
-Bar.prototype.at = function (i) {
-  return this.beats[i];
 };
 
 Bar.prototype.toString = function () {
