@@ -1,4 +1,4 @@
-module.exports = (function () {
+beep = module.exports = (function () {
   var ctx = new(window.audioContext || window.webkitAudioContext);
   return function (volume, duration, type, fn) {
 

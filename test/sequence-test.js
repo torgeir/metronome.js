@@ -12,7 +12,7 @@ describe('sequence', function () {
     b11by8 = Bar(11,8);
   });
 
-  it('calculates ms delay from bar\'s bpm and multiplier', function () {
+  it('calculates ms delay using bar\'s bpm and multiplier', function () {
     var seq = a.seq.withBars(Bar(4, 8, 120)).build;
 
     seq.ms().should.equal(250);

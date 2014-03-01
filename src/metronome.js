@@ -12,10 +12,19 @@ function Metronome (options) {
 Metronome.prototype.start = function () {
   var self = this;
 
+  this.stop();
+
   (function nextTick () {
     self.tick();
-    setTimeout(nextTick, self.seq.ms());
+    self.timeout = setTimeout(nextTick, self.seq.ms());
   })();
+};
+
+Metronome.prototype.stop = function () {
+  if (this.timeout) {
+    clearInterval(this.timeout);
+    this.timeout == null;
+  }
 };
 
 Metronome.prototype.tick = function () {

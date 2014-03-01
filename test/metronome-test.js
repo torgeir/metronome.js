@@ -17,20 +17,44 @@ describe('metronome', function () {
     }
   });
 
+  it('starts ticking', function () {
+    var spy = sinon.spy();
+    m.on('beat', spy);
+    clock.tick();
+
+    spy.should.have.been.called;
+  });
+
+  it('stops ticking, after current tick', function () {
+    var spy = sinon.spy();
+    m.on('beat', spy);
+    clock.tick();
+
+    m.stop();
+    clock.tick(500);
+
+    spy.should.have.been.calledOnce;
+  });
+
+  it('loops', function () {
+    clock.tick(1500); // skip hsss
+
+    m.on('beat', function (beat) {
+      beat.should.equal('h');
+    });
+    clock.tick(500);
+  });
+
   describe('4/4', function () {
 
     it('ticks hard first beat', function () {
-      m.start();
-
       m.on('beat', function (beat) {
         beat.should.equal('h');
       });
       clock.tick();
     });
 
-    it('ticks low rest beats', function () {
-      m.start();
-
+    it('ticks soft rest beats', function () {
       clock.tick(); // skip h
 
       var beats = '';
@@ -48,21 +72,6 @@ describe('metronome', function () {
       beats.should.eql('sss');
     });
 
-    it('loops', function () {
-      m.start();
-
-      clock.tick(1500); // skip hsss
-
-      m.on('beat', function (beat) {
-        beat.should.equal('h');
-      });
-      clock.tick(500);
-    });
-
-    beforeEach(function () {
-      // beats every 500ms
-      m = a.metronome.build;
-    });
   });
 
   describe('11/8', function () {
@@ -90,6 +99,10 @@ describe('metronome', function () {
 
   beforeEach(function () {
     clock = sinon.useFakeTimers();
+
+    // beats every 500ms
+    m = a.metronome.build;
+    m.start();
   });
 
   afterEach(function () {
