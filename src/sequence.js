@@ -6,12 +6,17 @@ function Sequence (bpm, bars) {
   }
 
   this.bpm = bpm;
-  this.beatIndex = 0;
 
   this.bars = bars.map(Sequence.asCopy);
   this.bars = this.flatten();
-  this.current = this.bars[0];
+
+  this.reset();
 }
+
+Sequence.prototype.reset = function () {
+  this.beatIndex = 0;
+  this.current = this.bars[0];
+};
 
 Sequence.prototype.flatten = function () {
   var self = this;

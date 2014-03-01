@@ -37,6 +37,14 @@ describe('sequence', function () {
       seq.nextBeat().should.equal('h');
     });
 
+    it('resets', function () {
+      seq.nextBeat();
+
+      seq.reset();
+
+      seq.nextBeat().should.equal('h');
+    });
+
     it('loops flat sequences', function () {
       beats(4, seq);
       beats(3, seq);

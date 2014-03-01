@@ -25,6 +25,7 @@ Metronome.prototype.stop = function () {
     clearInterval(this.timeout);
     this.timeout == null;
   }
+  this.seq.reset();
 };
 
 Metronome.prototype.tick = function () {

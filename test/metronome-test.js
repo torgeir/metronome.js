@@ -36,6 +36,22 @@ describe('metronome', function () {
     spy.should.have.been.calledOnce;
   });
 
+  it('restarts', function () {
+    var beats = '';
+    m.on('beat', function (beat) {
+      beats += beat;
+    });
+
+    clock.tick();
+
+    m.stop();
+    m.start();
+
+    clock.tick();
+
+    beats.should.equal('hh');
+  });
+
   it('loops', function () {
     clock.tick(1500); // skip hsss
 
